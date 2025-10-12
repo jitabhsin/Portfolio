@@ -3,7 +3,7 @@ import { FaJava, FaReact, FaHtml5, FaCss3Alt, FaGitAlt, FaAws, FaCodeBranch, FaC
 import { SiSpringboot, SiMysql, SiLeetcode } from 'react-icons/si';
 import { FiSun, FiMoon } from 'react-icons/fi';
 import { FaLinkedin, FaGithub, FaLightbulb } from 'react-icons/fa6';
-import { Chatbot } from './Chatbot';
+import { Chatbot } from './chatbot';
 
 const ThemeContext = createContext();
 

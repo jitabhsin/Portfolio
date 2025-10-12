@@ -1,7 +1,3 @@
-// Simple serverless proxy to forward chat requests to OpenRouter securely
-// Works on Vercel, Netlify (functions) and similar platforms that expose
-// process.env for environment variables.
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -10,12 +6,15 @@ export default async function handler(req, res) {
 
   try {
     const body = req.body;
+
     const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+    console.log('Loaded API key:', OPENROUTER_API_KEY?.slice(0, 6) + '...');
+
     if (!OPENROUTER_API_KEY) {
       return res.status(500).json({ error: 'Missing server-side API key' });
     }
 
-    const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
@@ -24,8 +23,17 @@ export default async function handler(req, res) {
       body: JSON.stringify(body)
     });
 
-    const data = await r.json();
-    return res.status(r.ok ? 200 : r.status).json(data);
+    console.log('OpenRouter response status:', response.status);
+
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      console.error('Failed to parse OpenRouter JSON:', e);
+      data = { error: 'Invalid JSON response from OpenRouter' };
+    }
+
+    return res.status(response.ok ? 200 : response.status).json(data);
   } catch (err) {
     console.error('Server proxy error:', err);
     return res.status(500).json({ error: 'Server error' });
