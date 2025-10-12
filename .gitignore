@@ -1,0 +1,136 @@
+# ===============================
+# 🌐 General OS & Editor Files
+# ===============================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+
+# ===============================
+# 🧠 Environment / Secrets
+# ===============================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ===============================
+# 🧩 Node / React Frontend
+# ===============================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+dist/
+dist-ssr/
+build/
+coverage/
+*.local
+.vscode/*
+!.vscode/extensions.json
+
+# ===============================
+# ☕ Java / Spring Boot Backend
+# ===============================
+target/
+bin/
+build/
+out/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.tmp
+hs_err_pid*
+replay_pid*
+.springBeans
+.mvn/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/application*.properties
+!**/src/main/**/application*.yml
+
+# ===============================
+# 🧰 IDE and Tooling
+# ===============================
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.project
+.classpath
+.settings/
+.sts4-cache/
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# VS Code
+.vscode/
+.history/
+
+# ===============================
+# 🧾 Logs and Reports
+# ===============================
+logs/
+*.log
+*.out
+*.err
+test-output/
+reports/
+jacoco.exec
+
+# ===============================
+# 🧱 OS and Package Managers
+# ===============================
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+*.pid
+*.seed
+*.pid.lock
+
+# ===============================
+# 🧮 Miscellaneous
+# ===============================
+.idea_modules/
+.classpath
+.project
+.recommenders
+.cache/
+.apt_generated/
+.factorypath
+.springBeans
+BOOT-INF/
+META-INF/
+MANIFEST.MF
+
+# ===============================
+# 🔒 Git and Temp
+# ===============================
+.gitmodules
+.gitconfig
+*.orig
+*.rej
+
+# ===============================
+# ☁️ Hosting / Build Platforms
+# ===============================
+.vercel/
+.netlify/
+.vite/
+

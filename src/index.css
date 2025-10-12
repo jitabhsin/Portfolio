@@ -1,0 +1,473 @@
+/* --- 1. SETUP & THEME VARIABLES --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --font-sans: 'Inter', sans-serif;
+  --transition-speed: 0.4s;
+  
+  /* Light Theme */
+  --bg: #f5f5f5;
+  --text: #1a202c;
+  --text-light: #5a6474;
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-border: #e2e8f0;
+  --primary: #2563eb;
+  --glow-color: rgba(59, 130, 246, 0.2);
+  --success-color: #10b981;
+}
+
+.dark {
+  /* Dark Theme */
+  --bg: #0a0a0a;
+  --text: #e2e8f0;
+  --text-light: #94a3b8;
+  --card-bg: rgba(26, 26, 26, 0.5);
+  --card-border: #2a2a2a;
+  --primary: #60a5fa;
+  --glow-color: rgba(96, 165, 250, 0.1);
+  --success-color: #34d399;
+}
+
+.torch {
+  --bg: #000000;
+  --text: #e2e8f0;
+  --text-light: #94a3b8;
+  --card-bg: rgba(26, 26, 26, 0.5);
+  --card-border: #2a2a2a;
+  --primary: #60a5fa;
+  --glow-color: rgba(96, 165, 250, 0.1);
+  --success-color: #34d399;
+}
+
+/* --- 2. GLOBAL STYLES & RESETS --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--text-light);
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: default;
+}
+
+/* --- 3. LAYOUT STYLES --- */
+.portfolio-container {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+
+.left-pane {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6rem 0;
+}
+
+.right-pane {
+  padding: 6rem 0;
+}
+
+/* Responsive Layout */
+@media (max-width: 1024px) {
+  .portfolio-container {
+    display: block;
+    padding: 0 2rem;
+  }
+  .left-pane {
+    position: static;
+    height: auto;
+    padding: 4rem 0 2rem 0;
+  }
+  .right-pane {
+    padding: 2rem 0;
+  }
+}
+
+/* --- 4. COMPONENT STYLES --- */
+
+/* Left Pane Content */
+.name-title {
+  font-size: clamp(2.5rem, 5vw, 3rem);
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.job-title {
+  font-size: 1.25rem;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+}
+.summary {
+  line-height: 1.7;
+  max-width: 400px;
+}
+.page-nav {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.page-nav a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-speed);
+}
+.page-nav a:hover { color: var(--text); }
+
+.social-links { display: flex; gap: 1.5rem; }
+.social-links a {
+  font-size: 1.5rem;
+  color: var(--text-light);
+  transition: color var(--transition-speed), transform var(--transition-speed);
+}
+.social-links a:hover {
+  color: var(--text);
+  transform: translateY(-3px);
+}
+
+/* Right Pane Content */
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(10px);
+  transition: transform var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed);
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: 0 0 20px 0 var(--glow-color);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.75rem;
+}
+.card-header h4 {
+  color: var(--text);
+  font-weight: 600;
+}
+.card-header p { font-size: 0.9rem; }
+.experience-card ul {
+  list-style-position: outside;
+  padding-left: 1.2rem;
+}
+.experience-card ul li { margin-bottom: 0.5rem; }
+
+.project-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.tech-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.tag {
+  background-color: color-mix(in srgb, var(--primary) 15%, transparent);
+  color: var(--primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.education-institution {
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+.education-details {
+  font-size: 0.9rem;
+}
+
+.skills-section { margin-top: 4rem; }
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.skill-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+.main-footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--card-border);
+  font-size: 0.9rem;
+}
+
+.email-box {
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 400px;
+}
+.email-box span {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-light);
+}
+.email-box button {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1rem;
+  transition: color var(--transition-speed);
+}
+.email-box button:hover {
+  color: var(--text);
+}
+.email-box .copied-icon {
+  color: var(--success-color);
+}
+
+
+/* --- 5. ANIMATIONS & THEME SWITCHER --- */
+
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.theme-switcher {
+    position: fixed;
+    top: 1.5rem;
+    right: 2rem;
+    z-index: 999;
+    display: flex;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 25px;
+    padding: 5px;
+    backdrop-filter: blur(10px);
+}
+.theme-switcher button {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    padding: 0.75rem;
+    font-size: 1.25rem;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    transition: all var(--transition-speed);
+}
+.theme-switcher button:hover { color: var(--text); }
+.theme-switcher button.active { background-color: var(--primary); color: white; }
+
+/* Torch Mode Mask */
+.torch .portfolio-container {
+  -webkit-mask-image: radial-gradient(circle 300px at var(--mouse-x, -999px) var(--mouse-y, -999px), black 50%, transparent 100%);
+  mask-image: radial-gradient(circle 300px at var(--mouse-x, -999px) var(--mouse-y, -999px), black 50%, transparent 100%);
+}
+
+/* --- 6. CHATBOT STYLES --- */
+.chat-fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease-in-out;
+}
+.chat-fab:hover {
+  transform: scale(1.1);
+}
+
+.chat-window {
+  position: fixed;
+  bottom: 6rem;
+  right: 2rem;
+  z-index: 1000;
+  width: 350px;
+  height: 500px;
+  background-color: var(--bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  transform: translateY(20px) scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.chat-window.open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 480px) {
+  .chat-window {
+    width: 90vw;
+    height: 70vh;
+    bottom: 5rem;
+    right: 5vw;
+  }
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--card-border);
+}
+.chat-header h3 {
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+}
+.chat-header button {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.chat-box {
+  flex-grow: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+.message {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  max-width: 90%;
+}
+.message.user {
+  margin-left: auto;
+  flex-direction: row-reverse;
+}
+.message p {
+  padding: 0.75rem 1rem;
+  border-radius: 18px;
+  line-height: 1.5;
+  font-size: 0.9rem;
+}
+.message.assistant p {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-light);
+  border-top-left-radius: 4px;
+}
+.message.user p {
+  background-color: var(--primary);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+.message .avatar {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+}
+
+.chat-input {
+  display: flex;
+  padding: 0.75rem;
+  border-top: 1px solid var(--card-border);
+}
+.chat-input input {
+  flex-grow: 1;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 0.75rem 1rem;
+  color: var(--text);
+  font-size: 0.9rem;
+  outline: none;
+}
+.chat-input input:focus {
+  border-color: var(--primary);
+}
+.chat-input button {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 1.2rem;
+  padding: 0.75rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+.chat-input button:disabled {
+  color: var(--text-light);
+  cursor: not-allowed;
+}
+
+.loading-dots span {
+    animation-name: blink;
+    animation-duration: 1.4s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    font-size: 1.5rem;
+    line-height: 0;
+}
+.loading-dots span:nth-child(2) { animation-delay: .2s; }
+.loading-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes blink {
+    0% { opacity: .2; }
+    20% { opacity: 1; }
+    100% { opacity: .2; }
+}
