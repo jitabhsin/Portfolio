@@ -1,7 +1,7 @@
 /* App.jsx */
 import React, { useState, useEffect, createContext, useContext, useRef } from 'react';
 import { FaJava, FaReact, FaHtml5, FaCss3Alt, FaGitAlt, FaAws, FaCodeBranch, FaCopy, FaCheck, FaHackerrank } from 'react-icons/fa';
-import { SiSpringboot, SiMysql, SiLeetcode } from 'react-icons/si';
+import { SiSpringboot, SiMysql, SiLeetcode, SiCredly } from 'react-icons/si';
 import { FiSun, FiMoon } from 'react-icons/fi';
 import { FaLinkedin, FaGithub, FaLightbulb } from 'react-icons/fa6';
 import { Chatbot } from './chatbot';
@@ -62,6 +62,7 @@ const portfolioData = {
       { name: 'LinkedIn', url: 'https://linkedin.com/in/jitabhsin', icon: <FaLinkedin /> },
       { name: 'LeetCode', url: 'https://leetcode.com/u/jitabhsin', icon: <SiLeetcode /> },
       { name: 'HackerRank', url: 'https://www.hackerrank.com/profile/jitabhsin', icon: <FaHackerrank /> },
+      {name: 'Credly',url:'https://www.credly.com/users/jitabhsin/badges', icon: <SiCredly /> }             
     ],
   },
   skills: [
