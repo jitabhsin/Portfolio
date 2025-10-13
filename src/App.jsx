@@ -146,40 +146,74 @@ const PortfolioLayout = () => {
   const { theme, setTheme } = useTheme();
   const [isCopied, setIsCopied] = useState(false);
   const portfolioRef = useRef(null);
+  const lastMousePosRef = useRef({ clientX: 0, clientY: 0 });
+  const isTouchDevice = useRef(false);
 
   useEffect(() => {
+    const root = document.documentElement;
+    isTouchDevice.current = 'ontouchstart' in window;
+    
     if (theme === 'torch') {
-      const root = document.documentElement;
+      let rafId = null;
       
+      const updateTorchPosition = (x, y) => {
+        const container = portfolioRef.current;
+        if (!container) return;
+        
+        const rect = container.getBoundingClientRect();
+        const scrollTop = window.scrollY;
+        const posX = x - rect.left;
+        const posY = y + scrollTop;
+        
+        // Cancel any pending animation frame
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+        }
+        
+        // Schedule the update
+        rafId = requestAnimationFrame(() => {
+          root.style.setProperty('--mouse-x', `${posX}px`);
+          root.style.setProperty('--mouse-y', `${posY}px`);
+          root.style.setProperty('--torch-transform', 'translate3d(0,0,0)');
+          rafId = null;
+        });
+      };
+
+      const throttledUpdate = (x, y) => {
+        if (!rafId) {
+          updateTorchPosition(x, y);
+        }
+      };
+
+      const handleMouseMove = (e) => {
+        if (isTouchDevice.current) return;
+        throttledUpdate(e.clientX, e.clientY);
+      };
+
       const handleTouchMove = (e) => {
-        if (!e.touches || e.touches.length === 0) return;
+        if (!e.touches[0]) return;
         e.preventDefault();
         const touch = e.touches[0];
-        const rect = portfolioRef.current.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY + window.scrollY;
-        root.style.setProperty('--mouse-x', `${x}px`);
-        root.style.setProperty('--mouse-y', `${y}px`);
+        throttledUpdate(touch.clientX, touch.clientY);
       };
 
-      const handleTouchStart = (e) => {
-        if (!e.touches || e.touches.length === 0) return;
-        e.preventDefault();
-        const touch = e.touches[0];
-        const rect = portfolioRef.current.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        const y = touch.clientY + window.scrollY;
-        root.style.setProperty('--mouse-x', `${x}px`);
-        root.style.setProperty('--mouse-y', `${y}px`);
-      };
-
-      const element = portfolioRef.current;
-      element.addEventListener('touchmove', handleTouchMove, { passive: false });
-      element.addEventListener('touchstart', handleTouchStart, { passive: false });
+      if (isTouchDevice.current) {
+        document.addEventListener('touchstart', handleTouchMove, { passive: false });
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      } else {
+        document.addEventListener('mousemove', handleMouseMove);
+      }
 
       return () => {
-        element.removeEventListener('touchmove', handleTouchMove);
-        element.removeEventListener('touchstart', handleTouchStart);
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+        }
+        if (isTouchDevice.current) {
+          document.removeEventListener('touchstart', handleTouchMove);
+          document.removeEventListener('touchmove', handleTouchMove);
+        } else {
+          document.removeEventListener('mousemove', handleMouseMove);
+        }
       };
     }
   }, [theme]);

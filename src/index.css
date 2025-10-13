@@ -32,13 +32,19 @@
 
 .torch {
   --bg: #000000;
-  --text: #e2e8f0;
-  --text-light: #94a3b8;
+  --text: #fff4e6;
+  --text-light: #ffe5d0;
   --card-bg: rgba(26, 26, 26, 0.5);
   --card-border: #2a2a2a;
-  --primary: #60a5fa;
-  --glow-color: rgba(96, 165, 250, 0.1);
+  --primary: #ffa94d;
+  --glow-color: rgba(255, 169, 77, 0.2);
   --success-color: #34d399;
+  --torch-glow: rgba(255, 146, 43, 0.15);
+  --torch-size: clamp(200px, 40vw, 400px);
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  /* Custom torch cursor. The numbers 16 44 represent the cursor hotspot (x, y) */
+  cursor: url("/cursors/torch-cursor.svg") 16 38, auto !important;
 }
 
 /* --- 2. GLOBAL STYLES & RESETS --- */
@@ -63,6 +69,10 @@ body {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 4rem;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .left-pane {
@@ -300,13 +310,53 @@ body {
 
 /* Torch Mode Mask */
 .torch .portfolio-container {
-  /* Use a CSS var so we can adjust size on small screens */
-  -webkit-mask-image: radial-gradient(circle var(--torch-size) at var(--mouse-x, 50%) var(--mouse-y, 50%), black 45%, transparent 100%);
-  mask-image: radial-gradient(circle var(--torch-size) at var(--mouse-x, 50%) var(--mouse-y, 50%), black 45%, transparent 100%);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  transition: -webkit-mask-position 0.08s linear, mask-position 0.08s linear;
-  touch-action: none; /* Prevent scrolling while using torch */
+  position: relative;
+  will-change: mask-image;
+  -webkit-mask-image: radial-gradient(
+    var(--torch-size) at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    black 30%,
+    transparent 70%
+  );
+  mask-image: radial-gradient(
+    var(--torch-size) at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    black 30%,
+    transparent 70%
+  );
+  transition: -webkit-mask-image 0.1s ease-out;
+}
+
+.torch .portfolio-container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    var(--torch-size) at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    var(--torch-glow),
+    transparent 70%
+  );
+  z-index: 1;
+  transition: background 0.1s ease-out;
+}
+
+/* Ensure content stays above the glow effect */
+.torch .portfolio-container > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Custom cursor for torch mode */
+.torch * {
+  /* Remove this line to allow specific cursor styling */
+  /* cursor: inherit !important; */
+}
+
+/* Remove the previous ::after pseudo-element cursor */
+.torch::after {
+  display: none;
 }
 
 /* --- 6. CHATBOT STYLES --- */
@@ -315,8 +365,8 @@ body {
   bottom: 2rem;
   right: 2rem;
   z-index: 1000;
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background-color: var(--primary);
   color: white;
@@ -373,32 +423,52 @@ body {
   .theme-switcher button { padding: 0.5rem; font-size: 1rem; }
 }
 
-/* Touch-friendly styles */
+/* Mobile Touch Optimizations */
 @media (max-width: 768px) {
+  .torch {
+    --torch-size: clamp(140px, 50vw, 200px);
+    touch-action: pan-y pinch-zoom;
+  }
+
+  .torch .portfolio-container {
+    touch-action: pan-y pinch-zoom;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Adjust torch effect for mobile */
+  .torch .portfolio-container::before {
+    pointer-events: none;
+    touch-action: none;
+  }
+
+  /* Increase touch targets */
   .theme-switcher button {
-    padding: 12px;
-    margin: 2px;
+    min-width: 44px;
+    min-height: 44px;
   }
-  
-  .page-nav a {
-    padding: 8px 0;
-  }
-  
-  .card {
-    padding: 1.25rem;
-  }
-  
-  .email-box button {
-    padding: 8px;
+
+  .chat-fab {
+    width: 56px;
+    height: 56px;
+    bottom: 1rem;
+    right: 1rem;
   }
 }
 
-/* Disable hover effects on touch devices */
+/* Touch Device Overrides */
 @media (hover: none) {
+  .torch {
+    cursor: default !important;
+  }
+  
+  .torch * {
+    cursor: default !important;
+  }
+
   .card:hover {
     transform: none;
   }
-  
+
   .social-links a:hover {
     transform: none;
   }
@@ -515,4 +585,42 @@ body {
     0% { opacity: .2; }
     20% { opacity: 1; }
     100% { opacity: .2; }
+}
+
+.torch {
+  --torch-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='48' viewBox='0 0 32 48' fill='none'%3E%3Cpath d='M14 44h4v4h-4zM14 2c0 4 1 8 2 10 1-2 2-6 2-10h-4z' fill='%23855E3A'/%3E%3Cpath d='M16 12c-4 0-8 3-8 8 0 3 2 5 3 6 2 2 3 4 3 6h4c0-2 1-4 3-6 1-1 3-3 3-6 0-5-4-8-8-8z' fill='%23FFA94D'/%3E%3Cpath d='M16 12c-2 0-4 3-4 8 0 3 1 5 1.5 6 1 2 1.5 4 1.5 6h2c0-2 .5-4 1.5-6 .5-1 1.5-3 1.5-6 0-5-2-8-4-8z' fill='%23FFD43B'/%3E%3C/svg%3E");
+  cursor: var(--torch-cursor) 16 44, auto !important;
+}
+
+/* Ensure all elements inherit the torch cursor */
+.torch *:not(button):not(a):not(input):not([role="button"]) {
+  cursor: var(--torch-cursor) 16 44, auto !important;
+}
+
+/* Interactive elements get special cursor positioning */
+.torch button,
+.torch a,
+.torch input,
+.torch [role="button"],
+.torch .chat-fab,
+.torch .project-link,
+.torch .social-links a,
+.torch .theme-switcher button {
+  cursor: var(--torch-cursor) 16 34, pointer !important;
+}
+
+/* Ensure cursor stays on top */
+.torch .portfolio-container::before {
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Remove old cursor.css imports if they exist */
+/* Remove any conflicting cursor definitions */
+
+/* Ensure elements don't override the cursor */
+.torch .chat-window,
+.torch .theme-switcher,
+.torch .card {
+  cursor: var(--torch-cursor) 16 44, auto !important;
 }

@@ -118,7 +118,11 @@ Always respond clearly and neatly — use line breaks, bullet points for lists, 
 
   return (
     <>
-      <button className="chat-fab" onClick={() => setIsOpen(true)} aria-label="Open Chatbot">
+      <button 
+        className="chat-fab" 
+        onClick={() => setIsOpen(!isOpen)} 
+        aria-label={isOpen ? "Close Chatbot" : "Open Chatbot"}
+      >
         <FaRobot />
       </button>
 
