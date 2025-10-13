@@ -1,9 +1,11 @@
+/* src/App.css */
 /* --- 1. SETUP & THEME VARIABLES --- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
   --font-sans: 'Inter', sans-serif;
   --transition-speed: 0.4s;
+  --torch-size: clamp(140px, 30vw, 300px); /* Responsive torch size */
   
   /* Light Theme */
   --bg: #f5f5f5;
@@ -298,8 +300,13 @@ body {
 
 /* Torch Mode Mask */
 .torch .portfolio-container {
-  -webkit-mask-image: radial-gradient(circle 300px at var(--mouse-x, -999px) var(--mouse-y, -999px), black 50%, transparent 100%);
-  mask-image: radial-gradient(circle 300px at var(--mouse-x, -999px) var(--mouse-y, -999px), black 50%, transparent 100%);
+  /* Use a CSS var so we can adjust size on small screens */
+  -webkit-mask-image: radial-gradient(circle var(--torch-size) at var(--mouse-x, 50%) var(--mouse-y, 50%), black 45%, transparent 100%);
+  mask-image: radial-gradient(circle var(--torch-size) at var(--mouse-x, 50%) var(--mouse-y, 50%), black 45%, transparent 100%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  transition: -webkit-mask-position 0.08s linear, mask-position 0.08s linear;
+  touch-action: none; /* Prevent scrolling while using torch */
 }
 
 /* --- 6. CHATBOT STYLES --- */
@@ -356,6 +363,44 @@ body {
     height: 70vh;
     bottom: 5rem;
     right: 5vw;
+  }
+
+  /* Reduce torch size on small screens so the mask is usable */
+  :root { --torch-size: 140px; }
+
+  /* Make theme switcher reachable on small screens */
+  .theme-switcher { top: 1rem; right: 1rem; padding: 4px; }
+  .theme-switcher button { padding: 0.5rem; font-size: 1rem; }
+}
+
+/* Touch-friendly styles */
+@media (max-width: 768px) {
+  .theme-switcher button {
+    padding: 12px;
+    margin: 2px;
+  }
+  
+  .page-nav a {
+    padding: 8px 0;
+  }
+  
+  .card {
+    padding: 1.25rem;
+  }
+  
+  .email-box button {
+    padding: 8px;
+  }
+}
+
+/* Disable hover effects on touch devices */
+@media (hover: none) {
+  .card:hover {
+    transform: none;
+  }
+  
+  .social-links a:hover {
+    transform: none;
   }
 }
 

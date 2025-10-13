@@ -1,3 +1,4 @@
+/* chatbot.jsx */
 import React, { useState, useRef, useEffect } from 'react';
 import { FiSend, FiX } from 'react-icons/fi';
 import { FaRobot, FaUser } from 'react-icons/fa'; // Added FaUser for avatar

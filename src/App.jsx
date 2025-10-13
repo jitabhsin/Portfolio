@@ -1,3 +1,4 @@
+/* App.jsx */
 import React, { useState, useEffect, createContext, useContext, useRef } from 'react';
 import { FaJava, FaReact, FaHtml5, FaCss3Alt, FaGitAlt, FaAws, FaCodeBranch, FaCopy, FaCheck, FaHackerrank } from 'react-icons/fa';
 import { SiSpringboot, SiMysql, SiLeetcode } from 'react-icons/si';
@@ -15,15 +16,30 @@ const ThemeProvider = ({ children }) => {
     root.classList.remove('light', 'dark', 'torch');
     root.classList.add(theme);
 
+    // Handlers update CSS vars for mask position. Support both mouse and touch.
     const handleMouseMove = (e) => {
       root.style.setProperty('--mouse-x', `${e.pageX}px`);
       root.style.setProperty('--mouse-y', `${e.pageY}px`);
     };
 
+    const handleTouchMove = (e) => {
+      if (!e.touches || e.touches.length === 0) return;
+      const t = e.touches[0];
+      root.style.setProperty('--mouse-x', `${t.pageX}px`);
+      root.style.setProperty('--mouse-y', `${t.pageY}px`);
+    };
+
     if (theme === 'torch') {
       document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('touchstart', handleTouchMove, { passive: true });
+      document.addEventListener('touchmove', handleTouchMove, { passive: true });
     }
-    return () => document.removeEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('touchstart', handleTouchMove);
+      document.removeEventListener('touchmove', handleTouchMove);
+    };
   }, [theme]);
 
   return (
@@ -128,6 +144,44 @@ const AnimatedSection = ({ children, className, id }) => {
 const PortfolioLayout = () => {
   const { theme, setTheme } = useTheme();
   const [isCopied, setIsCopied] = useState(false);
+  const portfolioRef = useRef(null);
+
+  useEffect(() => {
+    if (theme === 'torch') {
+      const root = document.documentElement;
+      
+      const handleTouchMove = (e) => {
+        if (!e.touches || e.touches.length === 0) return;
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = portfolioRef.current.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY + window.scrollY;
+        root.style.setProperty('--mouse-x', `${x}px`);
+        root.style.setProperty('--mouse-y', `${y}px`);
+      };
+
+      const handleTouchStart = (e) => {
+        if (!e.touches || e.touches.length === 0) return;
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = portfolioRef.current.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY + window.scrollY;
+        root.style.setProperty('--mouse-x', `${x}px`);
+        root.style.setProperty('--mouse-y', `${y}px`);
+      };
+
+      const element = portfolioRef.current;
+      element.addEventListener('touchmove', handleTouchMove, { passive: false });
+      element.addEventListener('touchstart', handleTouchStart, { passive: false });
+
+      return () => {
+        element.removeEventListener('touchmove', handleTouchMove);
+        element.removeEventListener('touchstart', handleTouchStart);
+      };
+    }
+  }, [theme]);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(portfolioData.contact.email);
@@ -145,7 +199,7 @@ const PortfolioLayout = () => {
           <button onClick={() => setTheme('torch')} className={theme === 'torch' ? 'active' : ''} aria-label="Torch Mode"><FaLightbulb /></button>
       </div>
 
-      <div className="portfolio-container">
+      <div className="portfolio-container" ref={portfolioRef}>
         <header className="left-pane">
             <div>
                 <h1 className="name-title">{portfolioData.name}</h1>
