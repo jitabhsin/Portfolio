@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css'; // This line is crucial, it imports all your styles
 import './cursor.css'; // Add this line
+import { inject } from "@vercel/analytics";
+inject();
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
