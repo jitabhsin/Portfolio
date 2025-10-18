@@ -16,7 +16,6 @@
   --primary: #2563eb;
   --glow-color: rgba(59, 130, 246, 0.2);
   --success-color: #10b981;
-  --torch-size: 300px; /* default torch size */
 }
 
 .dark {
@@ -124,8 +123,6 @@ body {
   text-decoration: none;
   font-weight: 500;
   transition: color var(--transition-speed);
-  padding: 0.75rem 0; /* larger tap target */
-  border-radius: 6px;
 }
 .page-nav a:hover { color: var(--text); }
 
@@ -134,8 +131,6 @@ body {
   font-size: 1.5rem;
   color: var(--text-light);
   transition: color var(--transition-speed), transform var(--transition-speed);
-  padding: 0.5rem; /* easier to tap */
-  border-radius: 8px;
 }
 .social-links a:hover {
   color: var(--text);
@@ -305,13 +300,8 @@ body {
 
 /* Torch Mode Mask */
 .torch .portfolio-container {
-  -webkit-mask-image: radial-gradient(circle var(--torch-size) at var(--mouse-x, -999px) var(--mouse-y, -999px), black 45%, transparent 100%);
-  mask-image: radial-gradient(circle var(--torch-size) at var(--mouse-x, -999px) var(--mouse-y, -999px), black 45%, transparent 100%);
-}
-
-/* Hint to reduce unexpected page scrolling when touch-dragging in torch mode */
-.torch body, .torch html {
-  touch-action: none;
+  -webkit-mask-image: radial-gradient(circle 300px at var(--mouse-x, -999px) var(--mouse-y, -999px), black 50%, transparent 100%);
+  mask-image: radial-gradient(circle 300px at var(--mouse-x, -999px) var(--mouse-y, -999px), black 50%, transparent 100%);
 }
 
 /* --- 6. CHATBOT STYLES --- */
@@ -369,24 +359,6 @@ body {
     bottom: 5rem;
     right: 5vw;
   }
-}
-
-/* Mobile specific touch improvements */
-@media (max-width: 768px) {
-  .theme-switcher { top: 1rem; right: 1rem; padding: 6px; }
-  .theme-switcher button { padding: 0.9rem; font-size: 1.1rem; }
-
-  .chat-fab { width: 68px; height: 68px; bottom: 1.5rem; right: 1.5rem; }
-
-  .left-pane { padding: 3rem 0 1.5rem 0; }
-  .summary { max-width: 100%; }
-
-  /* Make cards and lists more finger-friendly */
-  .card { padding: 1.25rem; }
-  .page-nav a { padding: 0.9rem 0; }
-
-  /* Reduce torch size on phones for better usability */
-  :root { --torch-size: 140px; }
 }
 
 .chat-header {

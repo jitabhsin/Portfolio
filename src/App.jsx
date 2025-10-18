@@ -5,6 +5,9 @@ import { SiSpringboot, SiMysql, SiLeetcode, SiCredly } from 'react-icons/si';
 import { FiSun, FiMoon } from 'react-icons/fi';
 import { FaLinkedin, FaGithub, FaLightbulb } from 'react-icons/fa6';
 import { Chatbot } from './chatbot';
+import { inject } from "@vercel/analytics";
+
+
 
 const ThemeContext = createContext();
 
@@ -93,6 +96,12 @@ const portfolioData = {
       tech: ["React JS", "Spring Boot", "MySQL"],
       url: "https://github.com/jitabhsin/CampusManagement-backend",
     },
+    {
+    title: "Practice-Spring: Mini Projects for Spring Skills",
+    description: "A workspace of standalone mini-projects to practice Spring Boot skills, including API demos, data converters (JSON/XML/Protobuf), Excel-MySQL integration, and CRUD services with pagination/filtering.",
+    tech: ["Java 17", "Spring Boot", "Maven", "JPA", "MySQL", "Apache POI"],
+    url: "https://github.com/jitabhsin/Practice-Spring",
+  },
   ],
   education: [
     {
